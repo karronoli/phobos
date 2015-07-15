@@ -2267,11 +2267,6 @@ struct HTTP
         p.status.reset();
 
         CurlOption opt;
-        scope (exit)
-        {
-            p.curl.clear(opt);
-        }
-
         final switch (p.method)
         {
         case Method.head:
@@ -2309,6 +2304,7 @@ struct HTTP
             break;
         }
 
+        scope (exit) p.curl.clear(opt);
         return p.curl.perform(throwOnError);
     }
 
