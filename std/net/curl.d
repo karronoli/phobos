@@ -652,6 +652,8 @@ T[] options(T = char, OptionsUnit)(const(char)[] url,
                                    const(OptionsUnit)[] optionsData = null,
                                    HTTP conn = HTTP())
 if (is(T == char) || is(T == ubyte))
+in { assert(optionsData == null); }
+body
 {
     conn.method = HTTP.Method.options;
     return _basicHTTP!(T)(url, optionsData, conn);
@@ -660,7 +662,7 @@ if (is(T == char) || is(T == ubyte))
 unittest
 {
     if (!netAllowed()) return;
-    auto res = options(testUrl2, "Hello world");
+    auto res = options(testUrl2);
     assert(res == "Hello world",
            "options!HTTP() returns unexpected content " ~ res);
 }
@@ -668,7 +670,7 @@ unittest
 unittest
 {
     if (!netAllowed()) return;
-    auto res = options(testUrl1, []);
+    auto res = options(testUrl1, null);
     assert(res == "Hello world\n",
            "options!HTTP() returns unexpected content " ~ res);
 }
